@@ -1,0 +1,2 @@
+useDynLib(VPdtw)
+exportPattern(VPdtw,dilation,plot.VPdtw)

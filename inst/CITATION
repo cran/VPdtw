@@ -1,0 +1,25 @@
+citHeader("To cite package ’VPdtw’ in publications please use:")
+
+citEntry(entry="Article",
+	title = "Alignment using variable penalty dynamic time warping",
+	
+	author = personList(as.person("David Clifford"),
+				as.person("Glenn Stone"),
+				as.person("Ivan Montoliu"),
+				as.person("Serge Rezzi"),
+				as.person("Francois-Pierre Martin"),
+				as.person("Philippe Guy"),
+				as.person("Stephen Bruce"),
+				as.person("Sunil Kochhar")),
+
+	journal = "Analytical Chemistry",
+
+	year = "2009",
+	volume = "81",
+	number = "3",
+	pages = "1000-1007",
+
+	textVersion = "D. Clifford, G. Stone, I. Montoliu, S. Rezzi, F.P. Martin, 
+			P. Guy, S. Bruce, and S. Kochhar. 
+			Alignment using variable penalty dynamic time warping. 
+			Analytical Chemistry, 81(3):1000 - 1007, 2009.")
