@@ -38,18 +38,6 @@ void TMatrix<Element> :: operator=(const Element &val)
   for(i=0; i< _length; i++) data[i] = val;
 }
 
-// extract reference to an entry (const and non-const versions)
-template <class Element> 
-Element & TMatrix<Element> ::operator()(const int i, const int j)
-{
-  return( data[index(i,j)] );
-}
-
-template <class Element> 
-const Element & TMatrix<Element> ::operator()(const int i, const int j) const
-{
-  return( data[index(i,j)] );
-}
 
 // manually instantiate commonly used variants
 template class TMatrix<double>;

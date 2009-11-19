@@ -21,8 +21,13 @@ class TMatrix {
   // reference to a matrix entry. There are two. 
   // First allows the entry to be modified 
   // Second returns only a const reference ie. not modify-able
-  inline Element &operator()(const int, const int); 
-  inline const Element &operator()(const int, const int) const;
+  inline Element &operator()(const int i, const int j) {
+     return( data[index(i,j)] );
+  }
+  inline const Element &operator()(const int i, const int j) const {
+     return( data[index(i,j)] );
+  }
+
 
   // A bunch of inquiry functions
   inline int nrows() const {return(_nrows);}

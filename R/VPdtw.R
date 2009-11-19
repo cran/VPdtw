@@ -76,7 +76,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
 
     ## Summary Statistics: 
 
-    cost <- function(x) {
+    cost1 <- function(x) {
       ret <- c(sum(abs(x$warpedQuery - x$reference),na.rm=TRUE) +
                sum(x$penalty[x$xVals[which(diff(x$shift)==1)+1]],na.rm=TRUE) +
                2*sum(x$penalty[x$xVals[which(diff(x$shift)==-1)+1]],na.rm=TRUE),
@@ -88,7 +88,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
       names(ret) <- c("Cost", "Overlap", "Max Obs. Shift","# Diag Moves", "# Expanded","# Dropped")
       ret
     }
-    output$summary <- cost(output)
+    output$summary <- cost1(output)
               
     output$information <- information
     
