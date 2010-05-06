@@ -1,17 +1,32 @@
 
-plot.VPdtw <- function(x,type=c("All","Before","After","Shift"),...)
+plot.VPdtw <- function(x,type=c("All","Before","After","Shift"),xlim=NULL,...)
   {
     bgcol <- grey(0.9)
     type <- match.arg(type,c("All","Before","After","Shift"))
+
     pp <- switch(type,
                  All=par(mfrow=c(3,1)),
                  Before=par(mfrow=c(1,1)),
                  After=par(mfrow=c(1,1)),
                  Shift=par(mfrow=c(1,1)))
     
-    xlim <- c(x$xVals[1],x$xVals[length(x$xVals)])
-    ylim <- range(x$query,x$reference,na.rm=TRUE)
+    if(is.null(xlim)) {
+      xlim <- c(x$xVals[1],x$xVals[length(x$xVals)])
+      ylim <- range(x$query,x$reference,na.rm=TRUE)
+    } else {
 
+      ind <- 1:length(x$reference)
+      ylim <- range(x$reference[which(ind>=xlim[1] & ind <= xlim[2])],na.rm=TRUE)
+      ind <- 1:length(x$query)
+      wind <- which(ind>=xlim[1]-350 & ind <= xlim[2]+350)
+      if(is.matrix(x$query)) {
+        ylim <- range(c(ylim,x$query[wind,]),na.rm=TRUE)
+      } else {
+        ylim <- range(c(ylim,x$query[wind]),na.rm=TRUE)
+      }
+      
+    }
+    
     if(type=="All" | type=="Before") {
       
       if(is.matrix(x$query)) {
@@ -43,9 +58,11 @@ plot.VPdtw <- function(x,type=c("All","Before","After","Shift"),...)
         box()
       }
       if(is.vector(x$query) & is.vector(x$penalty)) {
+
         plot(xlim,ylim,type="n",xlab="Index",ylab="Intensity",main="Query and Reference after Alignment")
         lines(x$xVals,x$reference,lwd=2,col=1)
         lines(x$xVals,x$warpedQuery,col=2)
+        
       }
       if(is.matrix(x$query) & is.matrix(x$penalty)) {
         ## should happen
@@ -67,14 +84,15 @@ plot.VPdtw <- function(x,type=c("All","Before","After","Shift"),...)
         ##image(x$xVals,1:ncol(x$shift),x$shift,xlab="Index",ylab="Sample",main="Shifts after Alignment")
         ##box()
         ncols <- ncol(x$shift)
-        xlim <- range(0,x$shift,na.rm=TRUE)
-        matplot(x$xVals,x$shift,type="l",lty=1,xlab="Index",ylab="Shift",main="Shifts required for Alignment",col=2:(ncols+1))
+        ##xlim <- range(0,x$shift,na.rm=TRUE)
+        
+        matplot(x$xVals,x$shift,type="l",lty=1,xlab="Index",ylab="Shift",main="Shifts required for Alignment",col=2:(ncols+1),xlim=xlim)
         if(is.matrix(x$penalty)) legend("topleft",legend=paste("penalty  #",1:ncols,sep=""),col=2:(ncols+1),lty=rep(1,ncols))
         if(is.matrix(x$query)) legend("topleft",legend=paste("query  #",1:ncols,sep=""),col=2:(ncols+1),lty=rep(1,ncols))
         abline(h=0,lty=2,col=grey(0.75))
       }
       if(is.vector(x$shift)) {
-        plot(x$xVals,x$shift,ylim=range(c(0,x$shift),na.rm=TRUE),xlab="Index",ylab="Shift",main="Shifts required for Alignment",type="n")
+        plot(x$xVals,x$shift,ylim=range(c(0,x$shift),na.rm=TRUE),xlab="Index",ylab="Shift",main="Shifts required for Alignment",type="n",xlim=xlim)
         abline(h=0,lty=2,col=grey(0.75))
         lines(x$xVals,x$shift)
                

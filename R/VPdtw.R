@@ -1,17 +1,27 @@
 VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random","median","mean","trimmed")) {
 
-  ## We assume Sakoe Chiba only for time constraints
+  ## We assume Sakoe Chiba DTW to allow for faster computation times
   if(!is.numeric(maxshift)) {
     return("Please specify maxshift as an integer value\n")
   }
 
+  ## Figure out what kind of alignment we are doing -
+
+  ## a reference vector to a query vector?
+  ## no reference and a matrix of query vectors?
+  ## something else = no implementation here
+  
   if(is.null(reference) & !is.matrix(query)) {
     cat("Please specify a reference when passing a non-matrix query\n")
     return("Exiting....\n")
   }
   
   if(is.null(reference) & is.matrix(query)) {
-    ## No reference specified so choosing one according to....
+
+    ## If no reference is specified, we choose one randomly, using
+    ## median, mean or trimmed mean of the query matrix depending on
+    ## the value of type as specified by the user.
+    
     type <- match.arg(Reference.type,c("random","median","mean","trimmed"))
     ss <- sample(1:ncol(query),1)
     reference <- switch(type,
@@ -20,11 +30,19 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
                         mean = apply(query,1,mean,na.rm=TRUE),
                         trimmed = apply(query,1,mean,na.rm=TRUE,trim=0.1))
     reference <- na.omit(reference)
+
+    ## if penalty is a number, then this means a constant penalty vector, create that vector
     if(length(penalty)==1) penalty <- rep(penalty,length(reference))
+
+    ## Check penalty vector length
     if(length(penalty)<length(reference)) {
       warning("Penalty vector should be at least of length ",length(reference)," but it has length ",length(penalty),"\n")
       return("Exiting...\n")
     }
+
+    ## information used in summary at end - what kind of reference do
+    ## we have - in this block of code it IS null, include info on
+    ## what kind was generated.
     
     information <- paste("Reference is NULL.")
     information <- paste(information,switch(type,
@@ -37,6 +55,13 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     information <- paste("Reference supplied by user.\n")
   }
 
+  ## This function DoAlignment is a wrapped that takes a vector query,
+  ## vector reference and vector penalty and (eventually) does a Sakoe
+  ## Chiba DTW with width maxshift. This function calls
+  ## signalMatchABand which calls the C++ code itself. This can be
+  ## "applied" to matrices of queries. Another version DoAlignmentP is
+  ## for apply to matrix of penalties.
+  
   DoAlignment <- function(query,reference,penalty,maxshift) {
     ## Drop NAs
     reference <- na.omit(reference)
@@ -47,7 +72,10 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
                                maxshift=maxshift)
     result ## matrix four columns 
   }
-    
+
+  ## Ok we are ready to do our alignment.
+
+  ## Scenario 1: all vectors:
   if(is.vector(reference) & is.vector(query) & is.vector(penalty)) {
     information <- "Reference is supplied by the user.\n"
     information <- paste(information,"Query vector is of length ",length(query),".\n",sep="")
@@ -57,6 +85,8 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     reference <- na.omit(reference)
     
     result <- DoAlignment(query,reference,penalty,maxshift)
+
+    ## format output a little better:
     
     output <- vector("list",6)
     names(output) <- c("xVals","reference","query","penalty","warpedQuery","shift")
@@ -94,6 +124,8 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     
     return(invisible(output))
   }
+
+  ## Scenario 2: Matrix of queries, penalty vector
   
   if(is.matrix(query) & is.vector(penalty)) {
     information <- paste(information,"Query matrix is made up of ",ncol(query)," samples of length ",nrow(query),".\n",sep="")
@@ -160,6 +192,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
       names(ret) <- c("Cost", "Overlap", "Max Obs Shift","# Diag Moves", "# Expanded","# Dropped")
       ret
     }
+    
     output$summary <- NULL
     for(ii in 1:ncol(output$warpedQuery)) output$summary <- rbind(output$summary,cost(output,ii))
     rownames(output$summary) <- paste("Query #",1:ncol(output$warpedQuery),":",sep="")
@@ -168,6 +201,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     return(invisible(output))
   }
 
+  ## For doing alignment for many different penalties
   DoAlignmentP <- function(penalty,query,reference,maxshift) {
     ## Drop NAs
     reference <- na.omit(reference)
@@ -178,7 +212,8 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
                                maxshift=maxshift)
     result
   }
-  
+
+  ## Scenario 3: vector query and penalty matrix
   if(is.vector(query) & is.matrix(penalty)) {
 
     information <- paste(information,"Query vector of length ",length(query),".\n",sep="")
@@ -245,6 +280,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
       names(ret) <- c("Cost", "Overlap", "Max Obs Shift", "# Diag Moves", "# Expanded","# Dropped")
       ret
     }
+    
     output$summary <- NULL
     for(ii in 1:ncol(output$warpedQuery)) output$summary <- rbind(output$summary,cost(output,ii))
     rownames(output$summary) <- paste("Penalty #",1:ncol(output$warpedQuery),":",sep="")
@@ -259,8 +295,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     return("Exiting....\n")
   }
 
-  ## shouldn't get this far
-  return("Problem somwhere\n")
+  ## finished
 }
 
 print.VPdtw <- function(x,...) {
