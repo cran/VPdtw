@@ -1,3 +1,6 @@
+#ifndef _EXTRA_H_
+#define _EXTRA_H_
+
 //-*-c++-*-
 // This file contains a few useful things
  
@@ -14,3 +17,4 @@ static inline double max(const double x, const double y) {return((x<y)?y:x);}
 static inline int min(const int x, const int y) {return((x<y)?x:y);}
 static inline double min(const double x, const double y) {return((x<y)?x:y);}
 
+#endif

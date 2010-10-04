@@ -83,6 +83,8 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     information <- paste(information,"Single Penalty vector supplied by user.\n",sep="")
     information <- paste(information,"Max allowed shift is ",maxshift,".\n",sep="")
     reference <- na.omit(reference)
+
+    if(length(penalty)==1) penalty <- rep(penalty,length(reference))
     
     result <- DoAlignment(query,reference,penalty,maxshift)
 
@@ -180,7 +182,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
 
     ## Summary Statistics for each query separately
     
-    cost <- function(x,ii) {
+    cost2 <- function(x,ii) {
       ret <- c(sum(abs(x$warpedQuery[,ii] - x$reference),na.rm=TRUE) +
                sum(x$penalty[x$xVals[which(diff(x$shift[,ii])==1)+1]],na.rm=TRUE) +
                2*sum(x$penalty[x$xVals[which(diff(x$shift[,ii])==-1)+1]],na.rm=TRUE),
@@ -194,7 +196,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     }
     
     output$summary <- NULL
-    for(ii in 1:ncol(output$warpedQuery)) output$summary <- rbind(output$summary,cost(output,ii))
+    for(ii in 1:ncol(output$warpedQuery)) output$summary <- rbind(output$summary,cost2(output,ii))
     rownames(output$summary) <- paste("Query #",1:ncol(output$warpedQuery),":",sep="")
     output$information <- information
         
@@ -268,7 +270,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
 
     ## Summary Statistics for each query separately
     
-    cost <- function(x,ii) {
+    cost3 <- function(x,ii) {
       ret <- c(sum(abs(x$warpedQuery[,ii] - x$reference),na.rm=TRUE) +
                sum(x$penalty[,ii][x$xVals[which(diff(x$shift[,ii])==1)+1]],na.rm=TRUE) +
                2*sum(x$penalty[,ii][x$xVals[which(diff(x$shift[,ii])==-1)+1]],na.rm=TRUE),
@@ -282,7 +284,7 @@ VPdtw <- function(reference,query,penalty=0,maxshift=50,Reference.type=c("random
     }
     
     output$summary <- NULL
-    for(ii in 1:ncol(output$warpedQuery)) output$summary <- rbind(output$summary,cost(output,ii))
+    for(ii in 1:ncol(output$warpedQuery)) output$summary <- rbind(output$summary,cost3(output,ii))
     rownames(output$summary) <- paste("Penalty #",1:ncol(output$warpedQuery),":",sep="")
     output$information <- information
     

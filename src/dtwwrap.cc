@@ -28,3 +28,4 @@ extern "C" {
     signalMatchABand(s1, s2, path, lambdaH, *Rmaxs);
   }
 }
+

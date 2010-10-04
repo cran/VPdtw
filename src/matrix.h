@@ -1,3 +1,6 @@
+#ifndef _MATRIX_H_
+#define _MATRIX_H_
+
 //-*-c++-*-
 // Template class library useful for storing vector and matrix data, 
 // both integer and double precision (consider float?)
@@ -95,6 +98,5 @@ private:
 typedef TVector<double> Vector;
 typedef TVector<int> IVector;
 
-
-
+#endif
 

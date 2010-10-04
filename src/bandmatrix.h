@@ -1,3 +1,6 @@
+#ifndef _BANDMATRIX_H_
+#define _BANDMATRIX_H_
+
 //-*-c++-*-
 #include "matrix.h"
 #include "extra.h"
@@ -45,3 +48,5 @@ class BMatrix : public TMatrix<Element> {
 // shorthand for double and int
 typedef BMatrix<double> BandMatrix;
 typedef BMatrix<int> BandIMatrix;
+
+#endif
