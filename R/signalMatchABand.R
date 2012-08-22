@@ -1,7 +1,7 @@
 signalMatchABand <- function(reference,query, lambda=rep(0.0,length(reference)), maxshift=50) {
 
 ### Change on August 2nd 2007.  Created vectors of penalties above
-  
+
 ### Performs nonlinear monotone transformation of the time
 ### axis to align to signals
 ### s and r are assumed to be two signals of the same length
@@ -29,9 +29,10 @@ signalMatchABand <- function(reference,query, lambda=rep(0.0,length(reference)),
            path=integer(nr),
            lambda=as.double(lambda),
            maxs=as.integer(maxshift),
-           dup=FALSE)
- 
-  path <- pp$path 
+           dup=FALSE,
+           PACKAGE="VPdtw")
+
+  path <- pp$path
   path[path==0] <- NA
   minp <- min(path,na.rm=TRUE)
   maxp <- max(path,na.rm=TRUE)
@@ -45,7 +46,7 @@ signalMatchABand <- function(reference,query, lambda=rep(0.0,length(reference)),
     xIndices <- c(xIndices,(maxp+1):length(query))
     xVals <- c(xVals,seq(from=max(xVals)+1,by=1,len=length(query)-(maxp)))
   }
-  
+
   if(FALSE) {
     plot(reference,type="l",lwd=2,xlim=c(1-maxshift,nr+maxshift))
     lines(which(!is.na(path)),query[na.omit(path)],col=2)
@@ -66,7 +67,7 @@ signalMatchABand <- function(reference,query, lambda=rep(0.0,length(reference)),
 
   output[,"warped query"] <- query[xIndices]
   output[,"shift"] <- shift
-  
+
 
   ##cat(range(pp$path - 1:length(pp$path)),"\n")
   zz <- output

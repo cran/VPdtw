@@ -1,9 +1,9 @@
-f78aad85dab2792e04ccfe3cdc967586 *DESCRIPTION
+06b2f31f6965cf648ea93bc9f6f5c0ac *DESCRIPTION
 12c62a00906ceaaf685e9cdbcab50785 *NAMESPACE
 3eedba2a82d2a02cd83e0fbce8e95229 *R/VPdtw.R
-6d27dd8b2edbdae6c0355e8a52d2b54a *R/dilation.R
+e727b290198c927d616af18a1d3ff120 *R/dilation.R
 3f97b978b30f7f69d04e9a73d26545bd *R/plot.VPdtw.R
-636854b7998c31c834d0b42d2f6d60da *R/signalMatchABand.R
+4ef8952dec1d4643fab609eb510dd70e *R/signalMatchABand.R
 f04ba99d349ecc775f60791fe0ac606e *data/query.RData
 59c1c2ec78538ab7f29dc7e90cdf701d *data/reference.RData
 66b0d53b94ecc0876fddac81dd71ed99 *inst/CITATION
