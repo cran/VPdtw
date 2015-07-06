@@ -1,5 +1,5 @@
-06b2f31f6965cf648ea93bc9f6f5c0ac *DESCRIPTION
-12c62a00906ceaaf685e9cdbcab50785 *NAMESPACE
+2e2a5d5f0c3d097ec5f9219b26313855 *DESCRIPTION
+5474166948ea29365c143d1f372f7455 *NAMESPACE
 3eedba2a82d2a02cd83e0fbce8e95229 *R/VPdtw.R
 e727b290198c927d616af18a1d3ff120 *R/dilation.R
 3f97b978b30f7f69d04e9a73d26545bd *R/plot.VPdtw.R
@@ -7,7 +7,7 @@ e727b290198c927d616af18a1d3ff120 *R/dilation.R
 f04ba99d349ecc775f60791fe0ac606e *data/query.RData
 59c1c2ec78538ab7f29dc7e90cdf701d *data/reference.RData
 66b0d53b94ecc0876fddac81dd71ed99 *inst/CITATION
-45c9283cb2bc14cf05f0c66e905b4dd7 *man/VPdtw.Rd
+c4d46be3abd45f613e1af1c76c6a53a8 *man/VPdtw.Rd
 5714a527ca9455b9f1adf54a48f9776e *man/dilation.Rd
 40dd6e6adc283609b5b56bba2fb84cd5 *man/reference.Rd
 0bb8214f5a916f7ba1f489101e82fbf2 *src/AdtwBand.cc

@@ -10,7 +10,8 @@ query signal(s) to a master signal. Penalties are incurred whenever a
 non-diagonal move is taken. 
 }
 \usage{
-VPdtw(reference, query, penalty = 0, maxshift = 50,Reference.type=c("random","median","mean","trimmed"))
+VPdtw(reference, query, penalty = 0, maxshift = 50, 
+      Reference.type = c("random","median","mean","trimmed"))
 }
 
 \arguments{
@@ -71,7 +72,8 @@ D; STONE, G; MONTOLIU, I; et al. ANALYTICAL CHEMISTRY Volume: 81 Issue: 3 Pages:
 
 \author{David Clifford, Glenn Stone}
 
-\seealso{Also check out the \link[dtw]{dtw} package by Toni Giorgino which covers many variations of dynamic time warping.}
+\seealso{Also check out the \link[dtw]{dtw} package by 
+         Toni Giorgino which covers many variations of dynamic time warping.}
 
 \examples{
   ## Citation
@@ -128,12 +130,14 @@ reference <- log(reference)
 query <- log(query)
 
 ## VPdtw
-result <- VPdtw(reference=reference[1:2500],query=query[1:2500],penalty=dilation(reference[1:2500],150)/4,maxshift=150)
+result <- VPdtw(reference=reference[1:2500],query=query[1:2500],
+                penalty=dilation(reference[1:2500],150)/4,maxshift=150)
 plot(result)
 result
 
 ## Zero penalty DTW
-result2 <- VPdtw(reference=reference[1:2500],query=query[1:2500],penalty=rep(0,length(reference)),maxshift=150)
+result2 <- VPdtw(reference=reference[1:2500],query=query[1:2500],
+                 penalty=rep(0,length(reference)),maxshift=150)
 plot(result2)
 
 ## Try both penalties at the same time
